@@ -13,8 +13,8 @@ class BinarySearchTree {
 
   root() {
     if(!this.rootOne){return null}
-    console.debug('Root Корень',this.rootOne.value)
-    return this.rootOne.value
+    console.debug('Root Корень',this.rootOne)
+    return this.rootOne
   }
 
   add( data ) {
@@ -25,8 +25,8 @@ class BinarySearchTree {
         node = new TreeNode(data);
         return node
       }
-      if(value === node.value){return node}
-      if (node.value > value){
+      if(value === node.data){return node}
+      if (node.data > value){
         node.left = addData(node.left, value)
       }else {
         node.right = addData(node.right, value)
@@ -41,38 +41,49 @@ class BinarySearchTree {
       if(!node){
         return false;
       }
-      if(node.value === value){
+      if(node.data === value){
         return true
       }
-      return (value<node.value)?
+      return (value<node.data)?
         searchData(node.left, value):
         searchData(node.right, value);
     }
   }
 
   find( data ) {
-    return findData(this.rootOne, data);
-    function findData(node, value){
-      if(!node){
-        return null;
+    let node = this.rootOne;
+    while(node.data!==data){
+      if(data<node.data){
+        node=node.left
+      }else if(data>node.data){
+        node=node.right
+      }else if(node===null){
+        return null
       }
-      if(node.value === value){
-        return node.value
-      }
-      return (value<node.value)?
-        findData(node.left, value):
-        findData(node.right, value);
     }
+    return node
+    // return findData(this.rootOne, data);
+    // function findData(node, value){
+    //   if(!node){
+    //     return null;
+    //   }
+    //   if(node.data === value){
+    //     return node.data
+    //   }
+    //   return (value<node.data)?
+    //     findData(node.left, value):
+    //     findData(node.right, value);
+    // }
   }
 
   remove( data ) {
     this.rootOne = removeData(this.rootOne, data);
     function removeData(node, value){
       if(!node){return null}
-      if(value < node.value){
+      if(value < node.data){
         node.left = removeData(node.left, value)
         return node
-      }else if(node.value < value){
+      }else if(node.data < value){
         node.right = removeData(node.right, value)
         return node
       }else{
@@ -95,8 +106,8 @@ class BinarySearchTree {
       while (minFromRight.left){
         minFromRight = minFromRight.left;
       }
-      node.value = minFromRight.value;
-      node.right = removeData(node.right, minFromRight.value);
+      node.data = minFromRight.data;
+      node.right = removeData(node.right, minFromRight.data);
       return node;
 
     }
@@ -104,27 +115,27 @@ class BinarySearchTree {
 
   min() {
     if (!this.root){
-      return;
+      return null;
     }
-      while(this.rootOne.left){
+      while(this.rootOne.left!==null){
           this.rootOne = this.rootOne.left
         
       
     }
-    console.debug('min',this.rootOne.value)
-    return this.rootOne
+    console.debug('min',this.rootOne.data)
+    return this.rootOne.data
   }
 
   max() {
     if (!this.root){
-      return;
+      return null;
     }
       while(this.rootOne.right){
           this.rootOne = this.rootOne.right
       
     }
-    console.debug('max',this.rootOne.value)
-    return this.rootOne.value
+    console.debug('max',this.rootOne.data)
+    return this.rootOne.data
   }
 
   print(rootOne = this.rootOne){
@@ -139,13 +150,24 @@ class BinarySearchTree {
 
 //? класс узла
 class TreeNode {
-  constructor(value){
-    this.value = value;
+  constructor(data){
+    this.data = data;
     this.left = null;
     this.right = null;
   }
 }
 
+
+const tree = new BinarySearchTree();
+tree.add(9);
+tree.add(14);
+tree.add(54);
+tree.add(2);
+tree.add(6);
+tree.add(8);
+tree.add(31);
+tree.add(1);
+console.debug(tree.find(2))
 
 // const tree = new BinarySearchTree()
 // tree.add(5)
